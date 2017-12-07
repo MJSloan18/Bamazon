@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazonCustomer.js",
+  "dependencies": {
+    "inquirer": "^4.0.1",
+    "prompt": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MJSloan18/Bamazon.git"
+  },
+  "author": "Michael J. Sloan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MJSloan18/Bamazon/issues"
+  },
+  "homepage": "https://github.com/MJSloan18/Bamazon#readme"
+}
