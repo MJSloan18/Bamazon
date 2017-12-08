@@ -3,7 +3,7 @@
 
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var prompt = require("prompt");
+// var prompt = require("prompt");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -15,12 +15,15 @@ var connection = mysql.createConnection({
     // Your password
     password: "",
     database: "bamazon"
-});
+})
 
 connection.connect(function(err) {
-    if (err) throw err;
+    // if (err) throw err;
     console.log("connected as id " + connection.threadId);
     afterConnection();
+    start();
+
+
 });
 
 //THE FOLLOWING CODE PULLS THE INFORMATION FROM THE DATABASE ONCE THE CONNECTION IS MADE//
@@ -44,39 +47,34 @@ function afterConnection() {
 //Prompt user with 2 questions
 //1. What is the ID for the product you want to purchase?
 //2. How many units would you like to purchase?
-function start() {
-    inquirer
-        .prompt({
-            name: "desires",
-            type: "rawlist",
-            message: "What is the #ID for the product you wish to purchase?",
-            choices: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        })
-        .then(function(answer) {
-            // based on their answer, either call the bid or the post functions
-            if (answer.desires.toUpperCase() === 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 || 10) {
-                promptOne();
-            }
-        });
+
+var start = function() {
+    inquirer.prompt({
+        name: "desires",
+        type: "rawlist",
+        message: "What is the #ID for the product you wish to purchase?",
+        choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    }).then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.desires === "1", "2", "3", "4", "5", "6", "7", "8", "9", "10") {
+            promptOne();
+        }
+
+    })
 }
 
 function promptOne() {
     // prompt for info about the item being put up for auction
-    inquirer
-        .prompt([{
-            name: "item",
-            type: "input",
-            message: "How Many Units Would You Like To Purchase?"
-        }])
-
-
-        .then(function(answer) {
-            connection.query(
-                function(err) {
-                    if (err) throw err;
-                    console.log("Your item is available!");
-                }
-            );
-            start();
+    inquirer.prompt({
+        name: "item",
+        type: "input",
+        message: "How Many Units Would You Like To Purchase?"
+    }).then(function readProducts() {
+        console.log("Checking product availability...\n");
+        connection.query("SELECT * FROM products", function(error, result) {
+            // Log all results of the SELECT statement
+            console.log(result);
         });
+    })
+
 }
