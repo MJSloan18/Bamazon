@@ -20,9 +20,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     // if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    afterConnection();
-    start();
-
+    start(afterConnection);
 
 });
 
@@ -37,7 +35,7 @@ function afterConnection() {
         //IN THE CONSOLE LOG ABOVE, result[0] WILL LOG ALL OF THE INFORMATION FROM THE T-SHIRT PRODUCT //
         //TO NAVIGATE TO SPECIFIC DATA ENTRY, result[0].product_name WILL SHOW ONLY THE PRODUCT "T-SHIRTS"//
 
-        connection.end();
+
 
     });
 }
@@ -58,6 +56,9 @@ var start = function() {
         // based on their answer, either call the bid or the post functions
         if (answer.desires === "1", "2", "3", "4", "5", "6", "7", "8", "9", "10") {
             promptOne();
+        }
+        else {
+
         }
 
     })
