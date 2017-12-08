@@ -20,7 +20,8 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     // if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    start(afterConnection);
+    afterConnection();
+
 
 });
 
@@ -30,7 +31,12 @@ connection.connect(function(err) {
 function afterConnection() {
     connection.query("SELECT * FROM products", function(error, result) {
         if (error) throw error;
-        console.log(result);
+        for (var i = 0; i < result.length; i++) {
+            console.log("item ID: " + result[i].item_id);
+            console.log("product_name: " + result[i].product_name)
+            console.log("---------------------")
+        }
+        start();
 
         //IN THE CONSOLE LOG ABOVE, result[0] WILL LOG ALL OF THE INFORMATION FROM THE T-SHIRT PRODUCT //
         //TO NAVIGATE TO SPECIFIC DATA ENTRY, result[0].product_name WILL SHOW ONLY THE PRODUCT "T-SHIRTS"//
@@ -49,13 +55,13 @@ function afterConnection() {
 var start = function() {
     inquirer.prompt({
         name: "desires",
-        type: "rawlist",
+        type: "list",
         message: "What is the #ID for the product you wish to purchase?",
         choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     }).then(function(answer) {
         // based on their answer, either call the bid or the post functions
         if (answer.desires === "1", "2", "3", "4", "5", "6", "7", "8", "9", "10") {
-            promptOne();
+            promptOne(answer.desires);
         }
         else {
 
@@ -64,7 +70,7 @@ var start = function() {
     })
 }
 
-function promptOne() {
+function promptOne(dataCompare) {
     // prompt for info about the item being put up for auction
     inquirer.prompt({
         name: "item",
@@ -72,10 +78,20 @@ function promptOne() {
         message: "How Many Units Would You Like To Purchase?"
     }).then(function readProducts() {
         console.log("Checking product availability...\n");
-        connection.query("SELECT * FROM products", function(error, result) {
-            // Log all results of the SELECT statement
-            console.log(result);
-        });
+        connection.query("SELECT * FROM products WHERE ?", {
+                item_id: dataCompare
+            },
+
+            function(error, result) {
+                console.log(result)
+
+
+
+
+
+                // Log all results of the SELECT statement
+                // console.log(result);
+            });
     })
 
 }
